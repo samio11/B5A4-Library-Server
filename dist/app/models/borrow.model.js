@@ -5,7 +5,6 @@ const mongoose_1 = require("mongoose");
 const borrowSchema = new mongoose_1.Schema({
     book: {
         type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, "Book Id must be Provided"],
         ref: "Book",
     },
     quantity: {
