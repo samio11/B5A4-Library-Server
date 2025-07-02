@@ -99,3 +99,75 @@ exports.borrowRoutes.get("/borrow-summary", (req, res) => __awaiter(void 0, void
         });
     }
 }));
+exports.borrowRoutes.get("/borrows", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield borrow_model_1.Borrow.find().populate("book");
+        res.status(201).json({
+            success: true,
+            message: "Borrowed books retrieved successfully",
+            data: data,
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err === null || err === void 0 ? void 0 : err.message,
+            error: err,
+        });
+    }
+}));
+exports.borrowRoutes.get("/borrow/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const data = yield borrow_model_1.Borrow.findById(id).populate("book");
+        res.status(201).json({
+            success: true,
+            message: "Borrowed books retrieved successfully",
+            data: data,
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err === null || err === void 0 ? void 0 : err.message,
+            error: err,
+        });
+    }
+}));
+exports.borrowRoutes.patch("/edit-borrow/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const body = req.body;
+        const data = yield borrow_model_1.Borrow.findByIdAndUpdate(id, body, { new: true });
+        res.status(200).json({
+            success: true,
+            message: "Borrowed books update successfully",
+            data: data,
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err === null || err === void 0 ? void 0 : err.message,
+            error: err,
+        });
+    }
+}));
+exports.borrowRoutes.delete("/delete-borrow/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const data = yield borrow_model_1.Borrow.findByIdAndDelete(id);
+        res.status(200).json({
+            success: true,
+            message: "Borrowed books deleted successfully",
+            data: null,
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err === null || err === void 0 ? void 0 : err.message,
+            error: err,
+        });
+    }
+}));

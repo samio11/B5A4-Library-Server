@@ -87,3 +87,75 @@ borrowRoutes.get("/borrow-summary", async (req: Request, res: Response) => {
     });
   }
 });
+
+borrowRoutes.get("/borrows", async (req: Request, res: Response) => {
+  try {
+    const data = await Borrow.find().populate("book");
+    res.status(201).json({
+      success: true,
+      message: "Borrowed books retrieved successfully",
+      data: data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err?.message,
+      error: err,
+    });
+  }
+});
+borrowRoutes.get("/borrow/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = await Borrow.findById(id).populate("book");
+    res.status(201).json({
+      success: true,
+      message: "Borrowed books retrieved successfully",
+      data: data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err?.message,
+      error: err,
+    });
+  }
+});
+borrowRoutes.patch("/edit-borrow/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const data = await Borrow.findByIdAndUpdate(id, body, { new: true });
+    res.status(200).json({
+      success: true,
+      message: "Borrowed books update successfully",
+      data: data,
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: err?.message,
+      error: err,
+    });
+  }
+});
+borrowRoutes.delete(
+  "/delete-borrow/:id",
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const data = await Borrow.findByIdAndDelete(id);
+      res.status(200).json({
+        success: true,
+        message: "Borrowed books deleted successfully",
+        data: null,
+      });
+    } catch (err: any) {
+      res.status(400).json({
+        success: false,
+        message: err?.message,
+        error: err,
+      });
+    }
+  }
+);
